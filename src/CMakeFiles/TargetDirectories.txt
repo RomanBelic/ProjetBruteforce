@@ -1,0 +1,3 @@
+/home/koko/Desktop/producer_consumer/src/CMakeFiles/rebuild_cache.dir
+/home/koko/Desktop/producer_consumer/src/CMakeFiles/edit_cache.dir
+/home/koko/Desktop/producer_consumer/src/CMakeFiles/main.dir
