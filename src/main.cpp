@@ -9,9 +9,20 @@
 #include <cryptopp/sha.h>
 #include <cryptopp/filters.h>
 #include <cryptopp/base64.h>
+#include "BruteForce.h"
 
 
-class BruteForce {
+int main() {
+
+  BruteForce b;
+
+  b.findWord(BruteForce::hashStringSHA256("kok"),4);
+  //b.decryptSHA256(BruteForce::hashStringSHA256("abc"));
+
+	return 0;
+}
+
+/*class BruteForce {
 
 private:
 
@@ -26,14 +37,14 @@ public:
 
   }
 
-	/*BruteForce(std::string stringToHash)
+  BruteForce(std::string stringToHash)
 	        :stringToHash(stringToHash)
   {
     encryptedString = BruteForce::hashStringSHA256(stringToHash);
     std::cout<< encryptedString <<std::endl;
     BruteForce::decryptSHA256(encryptedString);
   }
-  */
+
 
 	~BruteForce() {
 
@@ -141,11 +152,4 @@ public:
 }
 
 };
-
-int main() {
-
-  BruteForce b;
-  b.decryptSHA256(BruteForce::hashStringSHA256("abc"));
-
-	return 0;
-}
+*/
