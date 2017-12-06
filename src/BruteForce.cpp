@@ -97,11 +97,11 @@ void BruteForce::decryptSHA256(std::string encryptedString,std::string reducedDi
             {
               tmp = tmp + dict[0]; //tableau global
             }
-
-            char c = (char)(first.at(charToTest)+1);
-
+	
+	    //char c = (char)(first.at(charToTest)+1);
+	    size_t currentChar = dict.find(first.at(charToTest));
             first = first.substr(0,charToTest)
-                  + c
+                  + dict[currentChar+1]
                   + tmp;
 
             posFind = true;
