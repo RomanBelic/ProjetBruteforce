@@ -4,6 +4,7 @@
 #include <thread>
 #include "sha.h"
 #include <cmath>
+#include <mutex>
 
 
 
@@ -27,15 +28,18 @@ void BruteForce::findWord(std::string encryptedString, int nbThreads)
 	std::vector<int> nb_chars = getCharNumberPerThread(nbThreads);
 
 	int current_index = 0;
-	for(int i = 0; i < nbThreads; i++) {
-		int nbLetters = nb_chars.at(i);
-		std::string reducedDic ="";
-		for(int j = 0; j < nbLetters; j++) {
-			reducedDic += dict[current_index];
-			current_index++;
-		}
-        myThreads[i] = std::thread(&BruteForce::decryptSHA256,this,encryptedString,reducedDic);
-    }
+	for(int i = 0; i < nbThreads; i++)
+  {
+		  int nbLetters = nb_chars.at(i);
+		  std::string reducedDic ="";
+		  for(int j = 0; j < nbLetters; j++)
+      {
+			     reducedDic += dict[current_index];
+			     current_index++;
+		  }
+      myThreads[i] = std::thread(&BruteForce::decryptSHA256,this,encryptedString,reducedDic);
+  }
+
     for(int i = 0; i < nbThreads; i++) {
         myThreads[i].join();
     }
@@ -47,6 +51,7 @@ void BruteForce::decryptSHA256(std::string encryptedString,std::string reducedDi
   std::string toTest;
   std::string first = "";
   uint8_t length = 0;
+  //std::cout<<reducedDic<<std::endl;
 
   while(!find)
   {
@@ -86,7 +91,7 @@ void BruteForce::decryptSHA256(std::string encryptedString,std::string reducedDi
         else
         {
           //int ascii = (int)first.at(charToTest);
-          if(first.at(charToTest)== reducedDic[reducedDic.length()-1]) //tableau réduit
+          if(first.at(charToTest)== dict[dict.length()-1]) //tableau réduit
           {
             charToTest--;
           }
@@ -97,7 +102,7 @@ void BruteForce::decryptSHA256(std::string encryptedString,std::string reducedDi
             {
               tmp = tmp + dict[0]; //tableau global
             }
-	
+
 	    //char c = (char)(first.at(charToTest)+1);
 	    size_t currentChar = dict.find(first.at(charToTest));
             first = first.substr(0,charToTest)
@@ -111,21 +116,28 @@ void BruteForce::decryptSHA256(std::string encryptedString,std::string reducedDi
     }
   }
   std::cout<<toTest<<std::endl;
+
+  mtx.lock();
+  result = toTest;
+  mtx.unlock();
+
   exit(EXIT_SUCCESS);
 }
 
 
 std::vector<int> BruteForce::getCharNumberPerThread(int nb_threads) {
-	int dict_length = dict.length();
 
+  int dict_length = dict.length();
 	int default_nb_of_letters = floor(dict_length / nb_threads);
 	int remaining_letters = dict_length % nb_threads;
 
 	std::vector<int> nb_chars = {};
 
-	for(int i = 0; i < nb_threads; i++) {
+	for(int i = 0; i < nb_threads; i++)
+  {
 		int nb_chars_for_thread = default_nb_of_letters;
-		if (remaining_letters > 0) {
+		if (remaining_letters > 0)
+    {
 			nb_chars_for_thread += 1;
 			remaining_letters -= 1;
 		}
