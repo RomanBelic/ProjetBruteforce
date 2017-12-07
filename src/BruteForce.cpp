@@ -55,6 +55,9 @@ void BruteForce::decryptSHA256(std::string encryptedString,std::string reducedDi
 
   while(!find)
   {
+	  ///////fonction search_word
+	  
+	  /////fonction change_last_letter param (first,toTest) return find (il faut que toTest soit modifié par la méthode)
     for(uint8_t i = 0; i<= dict.length()-1 && !find; i++)
     {
       toTest = first + dict[i];
@@ -64,22 +67,27 @@ void BruteForce::decryptSHA256(std::string encryptedString,std::string reducedDi
 
       std::cout<<toTest<<std::endl;
     }
-
+	///// fin fonction change_last_letter
     bool posFind = false;
     uint8_t charToTest = length-1;
     while(!posFind)
     {
+	    /////fonction find_pos_letter_to_change param (posFind, charToTest,reducedDic,length) return first
       std::cout<<first<<std::endl;
       if(length == 0)// premier caractere
       {
+	      ///// fonction set_first_letter param (reducedDic, length) return first length doit avoir changé en sorti de fonction
         first = reducedDic[0]; //élément tableau réduit
         posFind = true;
         length++;
+	      /////fin fonction set_first_letter
       }
       else
       {
-        if(charToTest == 0 && first.at(charToTest) == reducedDic[reducedDic.length()-1]) //fini le premier caractère tableau réduit.
+	      
+        if(charToTest == 0 && first.at(charToTest) == reducedDic[reducedDic.length()-1]) //si on doit rajouter une lettre, on prend la première lettre de la plage du thread, et on complète par le premier caractère du dico complet jusqu'à avoir rajouté une lettre
         {
+		////fonction add_letter param(reducedDic, length) return first length doit avoir changé en sorti de fonction
           first = reducedDic[0]; // élément tableau réduit
           for(uint8_t i = 1; i<= length; i++)
           {
@@ -87,25 +95,29 @@ void BruteForce::decryptSHA256(std::string encryptedString,std::string reducedDi
           }
           length++;
           posFind = true;
+		//// fin fonction add_letter
         }
         else
         {
           //int ascii = (int)first.at(charToTest);
-          if(first.at(charToTest)== dict[dict.length()-1]) //tableau réduit
+          if(first.at(charToTest)== dict[dict.length()-1]) //si le charactère à tester est égale au dernier caractère du dico, alors on testera celui avant
           {
             charToTest--;
           }
           else
           {
             std::string tmp ="";
+		  ////fonction set_end_of_first param(charToTest) return tmp
             for(uint8_t i = charToTest+1; i < length; i++)
             {
               tmp = tmp + dict[0]; //tableau global
             }
-
+		 ////fin fonction get_end_of_first
 	    //char c = (char)(first.at(charToTest)+1);
-	    size_t currentChar = dict.find(first.at(charToTest));
-            first = first.substr(0,charToTest)
+		  
+		  ///fonction change_good_letter_from_first param (currentChar,first,tmp) return first
+	    size_t currentChar = dict.find(first.at(charToTest)); // à changer il faut mettre une variable (attention avec le charToTest-- faudra appeler le find)
+            first = first.substr(0,charToTest) ///je vois pas comment ça peut marche ça mdr faudrait que ça soit currentChar je suppose
                   + dict[currentChar+1]
                   + tmp;
 
@@ -113,7 +125,9 @@ void BruteForce::decryptSHA256(std::string encryptedString,std::string reducedDi
           }
         }
       }
+	    /////fin fonction find_pos_letter_to_change
     }
+	  ////////fin fonction search_word
   }
   std::cout<<toTest<<std::endl;
 
