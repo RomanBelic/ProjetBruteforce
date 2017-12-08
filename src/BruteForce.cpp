@@ -116,8 +116,8 @@ void BruteForce::decryptSHA256(std::string encryptedString,std::string reducedDi
 	    //char c = (char)(first.at(charToTest)+1);
 		  
 		  ///fonction change_good_letter_from_first param (currentChar,first,tmp) return first
-	    size_t currentChar = dict.find(first.at(charToTest)); // à changer il faut mettre une variable (attention avec le charToTest-- faudra appeler le find)
-            first = first.substr(0,charToTest) ///je vois pas comment ça peut marche ça mdr faudrait que ça soit currentChar je suppose
+	    size_t currentChar = dict.find(first.at(charToTest)); // à changer il faut mettre une variable (attention avec le charToTest-- faudra appeler le find) ou mapper à voir le plus rapide
+            first = first.substr(0,charToTest) 
                   + dict[currentChar+1]
                   + tmp;
 
